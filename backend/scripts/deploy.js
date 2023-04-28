@@ -1,19 +1,52 @@
 const { ethers, hre, artifacts } = require("hardhat");
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
-
+  const [deployer,per1,per2] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Account balance:", (await deployer.getBalance()).toString());
-  
+
  // Get the ContractFactories and Signers here.
   const stakingBiswap = await ethers.getContractFactory("stakingBiswap");
-  // deploy contracts
   const stake = await stakingBiswap.deploy();
   console.log(
       "stake",stake.address
   ); 
+
+    const vitalik_address = "0xB8A6F44fDD902627A578876ab9fEdCC1F244eDA8";
+    const addressTo = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
   
+    //  impersonating vitalik's account
+    await network.provider.request({
+      method: "hardhat_impersonateAccount",
+      params: [vitalik_address],
+    });
+  
+    //   make vitalik the signer
+    const signer = await ethers.getSigner(vitalik_address);
+  
+    console.log(
+      "Vitalik account before transaction",
+      ethers.utils.formatEther(await signer.getBalance())
+    );
+  
+    //   create  transaction
+    const tx = {
+      to: deployer.getBalance(),
+      value: ethers.utils.parseEther("1"),
+    };
+  
+    const recieptTx = await signer.sendTransaction(tx);
+  
+    await recieptTx.wait();
+  
+    console.log(`Transaction successful with hash: ${recieptTx.hash}`);
+    console.log(
+      "Vitalik account after transaction",
+      ethers.utils.formatEther(await signer.getBalance())
+    );
+  
+  
+
 
   //   ////contract verify scripts ///////////////////
   // await nft.deployTransaction.wait(5);
