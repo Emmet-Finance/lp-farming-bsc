@@ -7,9 +7,9 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
   
  // Get the ContractFactories and Signers here.
-  const staking = await ethers.getContractFactory("staking");
+  const stakingBiswap = await ethers.getContractFactory("stakingBiswap");
   // deploy contracts
-  const stake = await staking.deploy();
+  const stake = await stakingBiswap.deploy();
   console.log(
       "stake",stake.address
   ); 
@@ -42,7 +42,7 @@ async function main() {
 
 
   // Save copies of each contracts abi and address to the frontend.
-  saveFrontendFiles(Dex , "mohsinsDex");
+  saveFrontendFiles(stake , "stakingBiswap");
 }
 
 function saveFrontendFiles(contract, name) {

@@ -1,9 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
-//require('hardhat-abi-exporter');
 require('dotenv').config({path: __dirname+'/.env'})
 require("@nomiclabs/hardhat-etherscan");
 require('hardhat-contract-sizer');
-// require('hardhat-ethernal');
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -29,59 +27,80 @@ require('hardhat-contract-sizer');
 // const privateKey = `669a00a5dcee6b12e70ec23b4a793b14bcb38a0f657ce29ada80b578e14743a7`
 
 module.exports = {
+  solidity: {
+    compilers: [{
+      version: "0.8.18",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 1000,
+        },
+      },
+    },
+    {
+    version: "0.8.19",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000,
+      },
+    },
+  },
+  ]
+  },
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
-      chainId: 31337,
+      chainId: 1337,
       gasPrice: 225000000000,
+      forking: {
+        // url:'https://eth-mainnet.g.alchemy.com/v2/hmgNbqVFAngktTuwmAB2KceU06IJx-Fh',
+//url: `https://bsc-dataseed1.binance.org/`,
+        url : "https://wiser-wider-valley.bsc.discover.quiknode.pro/050ea5d25ccade9d764fac15bd4709b810d543a1/"
+      }
     },
-    goerli: {
-      url:`https://eth-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_API}`,
-      accounts: [`0x${process.env.privateKey}`],
-    },
-    testnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
-      chainId: 97,
-      gasPrice: 21000000000,
-      accounts: [`0x${process.env.privateKey}`],
-    },
-    mainnet: {
-      url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API}`,
-      accounts: [`0x${process.env.privateKey}`],
-    },
+    // goerli: {
+    //   url: `https://eth-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_API}`,
+    //   accounts: [`0x${process.env.privateKey}`],
+    // },
+    // testnet: {
+    //   url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+    //   chainId: 97,
+    //   gasPrice: 21000000000,
+    //   accounts: [`0x${process.env.privateKey}`],
+    // },
+    // mainnet: {
+    //   url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API}`,
+    //   accounts: [`0x${process.env.privateKey}`],
+    // },
   },
-  solidity: "0.8.19",
-  paths: {
-    artifacts: "./artifact",
-    sources: "./contracts",
-    cache: "./cache",
-    tests: "./test"
-  },
-  // ethernal: {
-  //   email: process.env.ETHERNAL_EMAIL,
-  //   password: process.env.ETHERNAL_PASSWORD,
-  //   },
   // contractSizer: {
   //   alphaSort: true,
   //   disambiguatePaths: false,
   //   runOnCompile: true,
   //   strict: true,
-  //   only: [':NFT$',':Marketplace$'],
+  //   only: [':Staking$',':HESTOKEN$'],
   // },
 
   // abiExporter: {
-  //   path: '.././Frontend/src/contractsData/',
+  //   path: '../frontend/src/contract',
   //   runOnCompile: true,
   //   clear: true,
-  //   only: [':NFT$',':Marketplace$'],
+  //   only: [':Staking$',':HESTOKEN$',':IERC20Metadata$',':IUniswapV2Router02$'],
   //   flat: true,
   //   spacing: 2,
   //   pretty: true,
   // },
+
+
+  // deployed contracts
+// 0x963af78444548Ed7cb4F3479268719C05FaD3695 contract BTFP
+// 0x3d1de993dfb747178c8ad3b9dff4f9751865d5f3 weth
+// 0xF93b3Bc07A3B3e29e2A80aC7B75F279e750C2b4A pair
   etherscan: {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
-    apiKey: "GC3A7BY9VEP5R54SDEGT3EQVE9G4AC13PV"
+    apiKey:"GC3A7BY9VEP5R54SDEGT3EQVE9G4AC13PV"
   },
   mocha: {
     timeout: 1000000
