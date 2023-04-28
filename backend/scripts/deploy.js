@@ -7,16 +7,14 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
   
  // Get the ContractFactories and Signers here.
-  const mohsinsDex = await ethers.getContractFactory("mohsinsDex");
+  const staking = await ethers.getContractFactory("staking");
   // deploy contracts
-  const Dex = await mohsinsDex.deploy();
+  const stake = await staking.deploy();
   console.log(
-      "Dex",Dex.address
+      "stake",stake.address
   ); 
   
 
- 
-  await Dex.setTexCallector(deployer.address);
   //   ////contract verify scripts ///////////////////
   // await nft.deployTransaction.wait(5);
 
