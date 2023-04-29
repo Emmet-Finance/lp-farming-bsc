@@ -174,15 +174,15 @@ contract stakingBiswap {
         require(msg.sender == owner,"your are not owner");
         _;
     }
-    IERC20 tokenbiswap;
+    IERC20 token;
     ISmartChefV2 biswap;
     IAutoBsw autobsw;
     address public owner;
     constructor() {
       owner=msg.sender;
-      tokenbiswap = IERC20(0x965f527d9159dce6288a2219db51fc6eef120dd1);
       biswap = ISmartChefV2(0xB8A6F44fDD902627A578876ab9fEdCC1F244eDA8);
       autobsw = IAutoBsw(0x97A16ff6Fd63A46bf973671762a39f3780Cda73D);
+      token = IERC20(0x965F527D9159dCe6288a2219DB51fc6Eef120dD1);
     }
      
     
@@ -197,13 +197,13 @@ contract stakingBiswap {
     //Need to approve token first
     function stakeToken(uint256 _amount) external {
         require(_amount > 0, "Stake amount must be greater than 0");
-        if(tokenbiswap.balanceOf(msg.sender) < _amount){
+        if(token.balanceOf(msg.sender) < _amount){
             revert youDontHaveBalance();
         }
         staking[msg.sender].push(stake(_amount));
         bool transfer = biswap.transferFrom(msg.sender,address(this),_amount);
         if(transfer){
-            tokenbiswap.approve(address(biswap),_amount);
+            token.approve(address(biswap),_amount);
             biswap.stake(_amount);
         }
         if(!isStaking[msg.sender]) {
@@ -213,11 +213,11 @@ contract stakingBiswap {
 		isStaking[msg.sender] = true;
     }
 
-    function depositToBSW(uint256 _amount) public onlyOwner{
-       if(tokenbiswap.balanceOf(address(this))<_amount){
+    function depositToBSW(uint256 _amount) public onlyOwner {
+       if(token.balanceOf(address(this))<_amount){
             revert youDontHaveBalance();
         }
-        tokenbiswap.approve(address(autobsw), amount);
+        token.approve(address(autobsw), _amount);
         autobsw.deposit(_amount);
     }
 
@@ -253,11 +253,6 @@ contract stakingBiswap {
     // }
 
     
-    // function addCustomToken(address _token) public onlyOwner {
-    //     Addedtokens++;
-    //     tokens[Addedtokens]=_token;
-    // }
-
 
     // function swapeToken(uint256 _tokenNb, address _swapeWith, uint256 _amount) public {
     //     tokenCreation token = tokenCreation(tokens[_tokenNb]);
@@ -273,29 +268,13 @@ contract stakingBiswap {
     //     token.transferFrom(owner,msg.sender,_amount);
     // }
 
-    // function BuyToken(uint256 _tokenNb, uint256 _amount ) public payable {
-    //     tokenCreation token = tokenCreation(tokens[_tokenNb]);
-    //     address owner = token.owner();
-    //     token.transferFrom(owner,msg.sender,_amount);
-    // }
+
 
     // function withDraw() public onlyOwner{
     //     (bool success,)=msg.sender.call{value:address(this).balance}("");
     //     if(!success){
     //     revert TransferFaild();
     //     } 
-    // }
-
-    // function Staking(uint256 _tokenNb , uint256 _amount, uint256 _endTime) public {
-    //   tokenCreation token = tokenCreation(tokens[_tokenNb]);
-    //  if(token.balanceOf(msg.sender)<_amount){
-    //         revert youDontHaveBalance();
-    //  }
-    // token.transferFrom(msg.sender,address(this),_amount);
-    // stakingId++;
-    // address Tkn = tokens[_tokenNb];
-    // uint256 time =(block.timestamp+_endTime);
-    // staking[stakingId]=stake(stakingId,msg.sender,Tkn,_amount,block.timestamp,time);
     // }
 
     // function WithdrawStakingTokens(uint256 _stakingId) public {
@@ -317,13 +296,7 @@ contract stakingBiswap {
 
        
 
-    // function createToken(string memory name, string memory symbol, uint256 initialSupply, address owner) public returns (address) {
-    //     tokenCreation token = new tokenCreation(name, symbol,owner,initialSupply);        
-    //     Addedtokens++;
-    //     tokens[Addedtokens]=address(token);
-    //     emit TokenCreated(address(token), owner);
-    //     return address(token);
-    // }
+  
 
 
 
