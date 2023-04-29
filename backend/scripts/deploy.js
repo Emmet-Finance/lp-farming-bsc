@@ -12,49 +12,44 @@ async function main() {
       "stake",stake.address
   ); 
 
-    const vitalik_address = "0xB8A6F44fDD902627A578876ab9fEdCC1F244eDA8";
-    const addressTo = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
-  
+  //////////// impersonating the walllet address //////////////////////
+    const vitalik_address = "0x8894e0a0c962cb723c1976a4421c95949be2d4e3";
     //  impersonating vitalik's account
     await network.provider.request({
       method: "hardhat_impersonateAccount",
       params: [vitalik_address],
     });
-  
     //   make vitalik the signer
     const signer = await ethers.getSigner(vitalik_address);
-  
     console.log(
       "Vitalik account before transaction",
       ethers.utils.formatEther(await signer.getBalance())
     );
-  
     //   create  transaction
     const tx = {
-      to: deployer.getBalance(),
+      to: deployer.getAddress(),
       value: ethers.utils.parseEther("1"),
     };
-  
     const recieptTx = await signer.sendTransaction(tx);
-  
     await recieptTx.wait();
+
+    let bwap ="0x965F527D9159dCe6288a2219DB51fc6Eef120dD1";//TokenAddress
+    swap= await ethers.getContractAt("BSWToken",bwap);
+    const res = await swap.connect(signer);
+    await res.transfer(deployer.address,"8643718239731596280347")
   
-    console.log(`Transaction successful with hash: ${recieptTx.hash}`);
+    let bal = await res.balanceOf(deployer.address);
+    console.log("hi",bal);
+
     console.log(
       "Vitalik account after transaction",
       ethers.utils.formatEther(await signer.getBalance())
     );
+  /////////here we Done this ////////////////
   
-  
+  //// call stack functions ////////////////
+  await stake.stakeToekn("10000000000000000000000");
 
-
-  //   ////contract verify scripts ///////////////////
-  // await nft.deployTransaction.wait(5);
-
-  // await hre.run(`verify:verify`, {
-  //   address: nft.address,
-  //   constructorArguments: []
-  // });
 
 
   //   ////contract verify scripts ///////////////////
