@@ -113,7 +113,7 @@ contract stakingBiswap {
     }
 
     //Need to approve token first
-    function stakeRex(uint256 _amount) external {
+    function stakeToken(uint256 _amount) external {
         require(_amount > 0, "Stake amount must be greater than 0");
         if(biswap.balanceOf(msg.sender)<_amount){
             revert youDontHaveBalance();

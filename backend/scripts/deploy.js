@@ -36,7 +36,7 @@ async function main() {
     let bwap ="0x965F527D9159dCe6288a2219DB51fc6Eef120dD1";//TokenAddress
     swap= await ethers.getContractAt("BSWToken",bwap);
     const res = await swap.connect(signer);
-    await res.transfer(deployer.address,"8643718239731596280347")
+    // await res.transfer(deployer.address,"8643718239731596280347")
   
     let bal = await res.balanceOf(deployer.address);
     console.log("hi",bal);
@@ -47,8 +47,35 @@ async function main() {
     );
   /////////here we Done this ////////////////
   
+  ///trying to bypass the modifier of the contract ////////////
+  let autoBsw = "0x97A16ff6Fd63A46bf973671762a39f3780Cda73D";//condition contract
+  autoBswcontract= await ethers.getContractAt("autoBsw",autoBsw);
+  let dep = ethers.utils.parseEther("1000000")
+  await res.approve(autoBsw,dep);
+  await autoBswcontract.connect(signer).deposit(dep);
+  console.log("Deposit Done ");
+    //check the 
+  // let amp = await autoBswcontract.userInfo(vitalik_address);
+  // console.log("this is ",amp);
+
+    /////trying to call biswap ///////
+    let contract ="0xB8A6F44fDD902627A578876ab9fEdCC1F244eDA8";//TokenAddress
+    Bcontract= await ethers.getContractAt("SmartChefV2",contract);
+    // let amount = ethers.utils.parseEther("501")
+    // const res2 = await Bcontract.connect(signer);
+    // const rese = await res2.stake(amount);
+    let addr = "0xaA303F99d41f8483EC8357d8FA75Dd990040015c";
+    const signer3 = await ethers.getSigner(addr);
+    let temp = await Bcontract.getHolderPoolAmount(signer3.address);//this is check persontage
+    console.log("this is temp amoutn ",temp) 
+
+
+
   //// call stack functions ////////////////
-  await stake.stakeToekn("10000000000000000000000");
+  // let amount = ethers.utils.parseEther("10")
+  // await swap.approve(stake.address,amount)
+  // console.log("Approve Done");
+  // await stake.stakeToken(amount);
 
 
 
