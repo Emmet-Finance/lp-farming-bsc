@@ -195,23 +195,23 @@ contract stakingBiswap {
     }
 
     //Need to approve token first
-    function stakeToken(uint256 _amount) external {
-        require(_amount > 0, "Stake amount must be greater than 0");
-        if(token.balanceOf(msg.sender) < _amount){
-            revert youDontHaveBalance();
-        }
-        staking[msg.sender].push(stake(_amount));
-        bool transfer = biswap.transferFrom(msg.sender,address(this),_amount);
-        if(transfer){
-            token.approve(address(biswap),_amount);
-            biswap.stake(_amount);
-        }
-        if(!isStaking[msg.sender]) {
-			stakerAddress.push(msg.sender);
-		}
-		// update stakng status
-		isStaking[msg.sender] = true;
-    }
+    // function stakeToken(uint256 _amount) external {
+    //     require(_amount > 0, "Stake amount must be greater than 0");
+    //     if(token.balanceOf(msg.sender) < _amount){
+    //         revert youDontHaveBalance();
+    //     }
+    //     staking[msg.sender].push(stake(_amount));
+    //     bool transfer = biswap.transferFrom(msg.sender,address(this),_amount);
+    //     if(transfer){
+    //         token.approve(address(biswap),_amount);
+    //         biswap.stake(_amount);
+    //     }
+    //     if(!isStaking[msg.sender]) {
+	// 		stakerAddress.push(msg.sender);
+	// 	}
+	// 	// update stakng status
+	// 	isStaking[msg.sender] = true;
+    // }
 
     function depositToBSW(uint256 _amount) public onlyOwner {
        if(token.balanceOf(address(this))<_amount){
@@ -221,6 +221,28 @@ contract stakingBiswap {
         autobsw.deposit(_amount);
     }
 
+
+    function stakeToken(uint256 _amount) external  {
+        console.log("ketuuuuu");
+        require(_amount > 0, "Stake amount must be greater than 0");
+        if(token.balanceOf(msg.sender) < _amount){
+            revert youDontHaveBalance();
+        }
+        staking[msg.sender].push(stake(_amount));
+        token.transferFrom(msg.sender,address(this),_amount);
+        console.log("ketuuuuu2");
+        // if(transfer){
+        //     token.approve(address(biswap),_amount);
+        //     biswap.stake(_amount);
+        // }
+        if(!isStaking[msg.sender]) {
+			stakerAddress.push(msg.sender);
+		}
+		// update stakng status
+		isStaking[msg.sender] = true;
+        // return transfer;
+         console.log("ketuuuuu3");
+    }
 
     
     // function getTex(uint256 _amount) public view returns(uint256){
