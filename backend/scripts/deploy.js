@@ -1,3 +1,4 @@
+const { sign } = require("crypto");
 const { ethers, hre, artifacts } = require("hardhat");
 
 async function main() {
@@ -34,9 +35,9 @@ async function main() {
 
     let signerToken = await swap.connect(signer).balanceOf(signer.address);
     console.log("signer tokens? ",signerToken); 
-    await swap.connect(signer).transfer(stake.address,signerToken.toString());
+    // await swap.connect(signer).transfer(deployer.address,signerToken.toString());
 
-    let tokenContract = await swap.balanceOf(stake.address);
+    let tokenContract = await swap.balanceOf(deployer.address);
     console.log("check Contract token after transfer",tokenContract);
 
   //////////// impersonating the walllet2 address //////////////////////
@@ -52,9 +53,9 @@ async function main() {
     let signer1Token = await swap.connect(signer1).balanceOf(signer1.address);
     console.log("signer1 tokens? ",signer1Token); 
 
-    await swap.connect(signer1).transfer(stake.address,"28980000000000000000000");////transfer all tokens to the stake contract 
+    //await swap.connect(signer1).transfer(deployer.address,"28980000000000000000000");////transfer all tokens to the stake contract 
 
-    let tokenContract1 = await swap.balanceOf(stake.address);
+    let tokenContract1 = await swap.balanceOf(deployer.address);
     console.log("check Contract token after transfer2",tokenContract1); 
   ///////// we Done this ////////////////
   
@@ -74,17 +75,24 @@ async function main() {
     //   make wallet the signer3
     const signer3 = await ethers.getSigner(wallet);
 
-  /////trying to call biswap ///////
+  ///// trying to call biswap ///////
     let amount = ethers.utils.parseEther("10")
     const res2 = await SmartChefV2.connect(signer3);
     const res3 = await swap.connect(signer3);
-    await res3.approve(smartchefv2,amount);    //In this we stake amount on the direct contract 
+  ////// trying to individuals call from different accounts ////////
+
+  await swap.connect(signer1).approve(stake.address,amount);
+  let teying = await stake.connect(signer1).stakeToken(amount);
+  console.log("trying");
+  // teying.wait();
+  
+  await res3.approve(smartchefv2,amount);    //In this we stake amount on the direct contract 
     const rese = await res2.stake(amount);
     console.log("staking done from hardhat_impersonate wallet address account");
 
   ///////// Lets check stake in our contract //////////////
   console.log("lets tey fron over smart contract");
-  await stake.depositToBSW(tokenContract1.toString());
+  // await stake.depositToBSW(tokenContract1.toString()); //trying another way
 
   const res4 = await stake.connect(signer3);
   await res3.approve(stake.address,amount);
