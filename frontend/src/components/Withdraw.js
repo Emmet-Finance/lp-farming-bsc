@@ -1,36 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { ethers } from "ethers";
-import dexAddress from "../contractsData/mohsinsDex-address.json"
-import dexAbi from "../contractsData/mohsinsDex.json"
+import dexAddress from "../contractsData/stakingBiswap-address.json"
+import dexAbi from "../contractsData/stakingBiswap.json"
 import {WithdrawBox} from "./WithdrawBox";
 
 export const Withdraw = ({ dex , account}) => {
     const [stakeAmount, setStakeAmount] = useState([]);
 
-    const WithdrawStakingTokens = async()=>{
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    const dex = new ethers.Contract(dexAddress.address, dexAbi.abi, signer)
+    // const WithdrawStakingTokens = async()=>{
+    // const provider = new ethers.providers.Web3Provider(window.ethereum)
+    // const signer = provider.getSigner()
+    // const dex = new ethers.Contract(dexAddress.address, dexAbi.abi, signer)
      
-    let id = await dex?.stakingId()
-    let items = []
+    // let id = await dex?.stakingId()
+    // let items = []
   
-    for(let i=1; i<=id; i++){
-        let stake = await dex.staking(i);
+    // for(let i=1; i<=id; i++){
+    //     let stake = await dex.staking(i);
     
-    if (stake.staker?.toString().toLowerCase() === account?.toString().toLowerCase()) {
-            let stakes = await dex.staking(i);
+    // if (stake.staker?.toString().toLowerCase() === account?.toString().toLowerCase()) {
+    //         let stakes = await dex.staking(i);
           
-            items.push(stakes)
-          }
-        }
-     setStakeAmount(items) 
-    } 
+    //         items.push(stakes)
+    //       }
+    //     }
+    //  setStakeAmount(items) 
+    // } 
     
    
     
     useEffect(()=> {
-        WithdrawStakingTokens();
+        // WithdrawStakingTokens();
     },[account])
 
 

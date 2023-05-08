@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { Withdraw } from './components/Withdraw';
 import { Staking } from './components/Staking';
 import { ethers} from "ethers";
-import dexAddress from "./contractsData/mohsinsDex-address.json"
-import dexAbi from "./contractsData/mohsinsDex.json"
+import dexAddress from "./contractsData/stakingBiswap-address.json"
+import dexAbi from "./contractsData/stakingBiswap.json"
 
 const style = {
   position: 'absolute',
@@ -102,8 +102,6 @@ const loadContracts = async (signer) => {
   setDex(dex)
     setLoading(false)
 }
-
-
   useEffect(() => {
     checkIsWalletConnected();
   }, [])
